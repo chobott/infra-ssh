@@ -1,51 +1,51 @@
-# Rotace a audit SSH klí¹¡è¹¥
+# Rotace a audit SSH klicu
 
 ## Harmonogram rotace
 
-| Typ klí¹¡è¹¡e | Frekvence |
+| Typ klice | Frekvence |
 |-----------|-----------|
-| Osobní¹¡ klí¹¡è¹¡e | 6–12 mìõ¹¡¥ců |
-| Automatizaè¹¡ní¹¡/system klí¹¡è¹¡e | 3–6 mìõ¹¡¥ců |
-| Vysoce bezpeè¹¡è¹¡né¹¡ prostØ®edí¹¡ | ÈÙ¡astì½½ji dle politiky |
+| Osobni klice | 6-12 mesicu |
+| Automatizacni/system klice | 3-6 mesicu |
+| Vysoce bezpecne prostredi | Castěji dle politiky |
 
-## Proces rotace klí¹¡è¹¡e
+## Proces rotace klice
 
-### Krok 1: Vygeneroví¹¡ní¹¡ novè¹¡ho klí¹¡è¹¡e
+### Krok 1: Vygenerovani noveho klice
 
 ```bash
 ssh-keygen -t ed25519 -C "jan.novak+2026@firma.cz" -f ~/.ssh/id_ed25519_infra_2026
 ```
 
-### Krok 2: Nasazení¹¡ novè¹¡ho klí¹¡è¹¡e
+### Krok 2: Nasazeni noveho klice
 
 ```bash
-# PØ®idejte novì½½ klí¹¡è¹¡ do authorized_keys (zachovejte starì½½ doè¹¡asnì½½)
+# Pridejte novy klic do authorized_keys (zachovejte stary docasne)
 cat ~/.ssh/id_ed25519_infra_2026.pub >> ~/.ssh/authorized_keys
 
-# Otestujte pØ®ipojenì½½ s novì½½m klí¹¡è¹¡em
+# Otestujte pripojeni s novym klicem
 ssh -i ~/.ssh/id_ed25519_infra_2026 user@server.cz
 ```
 
-### Krok 3: Odstranì½½ní¹¡ starè¹¡ho klí¹¡è¹¡e
+### Krok 3: Odstraneni stareho klice
 
-Po úspì½½šné¹¡m testoví¹¡ní¹¡ odstraňte starì½½ klí¹¡è¹¡ z `authorized_keys`:
+Po uspesnem testovani odstrante stary klic z `authorized_keys`:
 
 ```bash
-# Editujte authorized_keys a odstraňte ØØ®á¹¡dek se starì½½m klí¹¡è¹¡em
+# Editujte authorized_keys a odstrante radek se starym klicem
 nano ~/.ssh/authorized_keys
 ```
 
-### Krok 4: Zálohoví¹¡ní¹¡ a zniè¹¡ení¹¡ starè¹¡ho klí¹¡è¹¡e
+### Krok 4: Zalohovani a zniceni stareho klice
 
 ```bash
-# Záloha pØ®ed zniè¹¡ení¹¡m
+# Zaloha pred znicenim
 mv ~/.ssh/id_ed25519_infra ~/.ssh/old_keys/id_ed25519_infra_2025_backup
 
-# Bezpeè¹¡è¹¡né¹¡ smazá¹¡ní¹¡ (pØ®epsá¹¡ní¹¡)
+# Bezpecne smazani (prepsani)
 shred -u ~/.ssh/id_ed25519_infra_2025_backup
 ```
 
-## Audit SSH klí¹¡è¹¥
+## Audit SSH klicu
 
 ### Skript pro audit (viz `scripts/audit-keys.sh`)
 
@@ -62,38 +62,38 @@ for server in "${SERVERS[@]}"; do
 done
 ```
 
-### Ruè¹¡ní¹¡ audit
+### Rucni audit
 
 ```bash
-# Kontrola všech klí¹¡è¹¥ na serveru
+# Kontrola vsech klicu na serveru
 find /home -name authorized_keys -exec echo "=== {} ===" \; -exec cat {} \;
 
-# Kontrola starì½½ch klí¹¡è¹¥ (>90 dní́)
+# Kontrola starych klicu (>90 dnu)
 find /home -name 'id_rsa.pub' -mtime +90 -exec echo "Rotate key: {}" \;
 ```
 
 ## Checklist pro audit
 
-- [ ] Všechny klí¹¡è¹¡e jsou Ed25519 nebo RSA 4096-bit
-- [ ] Žá¹¡dné¹¡ DSA nebo RSA <2048 bit
-- [ ] Všechny privá¹¡tní¹¡ klí¹¡è¹¡e mají passphrase
-- [ ] Oprá¹¡vnì½½ní¹¡ souborů jsou sprá¹¡vná¹¡ (600/644/700)
-- [ ] Žá¹¡dné¹¡ sdí¹¡lené¹¡ klí¹¡è¹¡e mezi uživateli
-- [ ] Všichni odchozí¹¡ zamì½½stnanci mají zrušené¹¡ klí¹¡è¹¡e
+- [ ] Vsechny klice jsou Ed25519 nebo RSA 4096-bit
+- [ ] Zadné´´ne DSA nebo RSA <2048 bit
+- [ ] Vsechny privatni klice maji passphrase
+- [ ] Opravneni souboru jsou spravna (600/644/700)
+- [ ] Zadné´´ne sdilene klice mezi uzivateli
+- [ ] Vsichni odchozi zamestnanci maji zrusene klice
 - [ ] PasswordAuthentication je disabled
-- [ ] Logoví¹¡ní¹¡ je povoleno (LogLevel VERBOSE)
-- [ ] Fail2Ban nebo podobná¹¡ ochrana je aktivní¹¡
+- [ ] Logovani je povoleno (LogLevel VERBOSE)
+- [ ] Fail2Ban nebo podobna ochrana je aktivni
 
 ## Automatizace auditu
 
-Pro vìtší́ infrastrukturu použijte:
+Pro vetsi infrastrukturu pouzijte:
 
 - **SSH Audit** (ssh-audit.ru)
 - **Teleport** (certificate-based SSH)
 - **HashiCorp Vault** (SSH secrets engine)
-- **Ansible** pro hromadné¹¡ nasazení¹¡ a audit
+- **Ansible** pro hromadne nasazeni a audit
 
-PØ®í¹¡klad Ansible playbook pro audit:
+Priklad Ansible playbook pro audit:
 
 ```yaml
 - name: Audit SSH keys
