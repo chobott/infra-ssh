@@ -1,18 +1,18 @@
-# Best Practices pro sprá¹¡vu SSH klí¹¡è¹¥
+# Best Practices pro spravu SSH klicu
 
-## 1. Generoví¹¡ní¹¡ silnì½½ch klí¹¡è¹¥
+## 1. Generovani silnych klicu
 
-- **Typ klí¹¡è¹¡e:** Ed25519 (preferová¹¡no) nebo RSA 4096-bit
-- **Passphrase:** Vždy používejte silnou passphrase (min. 12 znaků)
-- **Uniká¹¡tní¹¡ klí¹¡è¹¡e:** Každì½½ uživatel musí́ mí́t vlastnì½½ klí¹¡è¹¡
+- **Typ klice:** Ed25519 (preferovano) nebo RSA 4096-bit
+- **Passphrase:** Vzdy pouzivejte silnou passphrase (min. 12 znaku)
+- **Unikatni klice:** Kazdy uzivatel musi mit vlastni klic
 
-## 2. Bezpeè¹¡è¹¡né¹¡ uloženì½½ privá¹¡tní¹¡ch klí¹¡è¹¥
+## 2. Bezpecne ulozeni privatnich klicu
 
-- Nikdy neuklá¹¡dejte privá¹¡tní¹¡ klí¹¡è¹¡e do cloudovì½½ch složek (Dropbox, Google Drive)
-- Používejte SSH agent nebo hardware tokeny (YubiKey)
-- Zálohujte šifrovanì½½
+- Nikdy neukladejte privatni klice do cloudovych slozek (Dropbox, Google Drive)
+- Pouzivejte SSH agent nebo hardware tokeny (YubiKey)
+- Zalohujte sifrovane
 
-## 3. Oprá¹¡vnì½½ní¹¡ souborů
+## 3. Opravneni souboru
 
 ```bash
 chmod 700 ~/.ssh
@@ -21,17 +21,17 @@ chmod 644 ~/.ssh/id_ed25519.pub
 chmod 600 ~/.ssh/authorized_keys
 ```
 
-## 4. Omezenì½½ pØ®í¹¡stupu
+## 4. Omezeni pristupu
 
-- Používejte `from=` a `command=` restrikce v `authorized_keys`
-- PØ®í¹¡klad:
+- Pouzivejte `from=` a `command=` restrikce v `authorized_keys`
+- Priklad:
 ```
 from="192.168.1.0/24",no-port-forwarding,no-X11-forwarding ssh-ed25519 AAAA... user@firma.cz
 ```
 
-## 5. Zaká¹¡zá¹¡ní¹¡ password autentizace
+## 5. Zakazani password autentizace
 
-Po nasazení¹¡ všech klí¹¡è¹¥:
+Po nasazeni vsech klicu:
 
 ```bash
 # V /etc/ssh/sshd_config
@@ -39,9 +39,9 @@ PasswordAuthentication no
 PermitEmptyPasswords no
 ```
 
-## 6. Použití¹¡ bastion hostu
+## 6. Pouziti bastion hostu
 
-Pro pØ®í¹¡stup do interní¹¡ sí́tì½½:
+Pro pristup do interni site:
 
 ```bash
 # ~/.ssh/config
@@ -56,30 +56,30 @@ Host internal-*
     IdentityFile ~/.ssh/id_ed25519_internal
 ```
 
-## 7. Monitoroví¹¡ní¹¡ a logoví¹¡ní¹¡
+## 7. Monitorovani a logovani
 
 - Povolte verbose logging: `LogLevel VERBOSE` v `sshd_config`
 - Forwardujte logy do SIEM
-- Pravidelnì½½ kontrolujte `/var/log/auth.log` nebo `/var/log/secure`
+- Pravidelne kontrolujte `/var/log/auth.log` nebo `/var/log/secure`
 
-## 8. Dvoufaktorová¹¡ autentizace (2FA)
+## 8. Dvoufaktorova autentizace (2FA)
 
-Pro kritickou infrastrukturu kombinujte SSH klí¹¡è¹¡e s TOTP nebo hardware tokeny.
+Pro kritickou infrastrukturu kombinujte SSH klice s TOTP nebo hardware tokeny.
 
-## 9. Inventarizace klí¹¡è¹¥
+## 9. Inventarizace klicu
 
-Udržujte centrá¹¡lní¹¡ registr všech SSH klí¹¡è¹¥:
+Udrzujte centralni registr vsech SSH klicu:
 
-| ID | Uživatel | Typ | Úè¹¡el | Expirace | Servery |
+| ID | Uzivatel | Typ | Ucel | Expirace | Servery |
 |----|----------|-----|------|----------|---------|
 | 001 | jan.novak | Ed25519 | Admin | 2027-01 | web01, db01 |
 | 002 | deploy | RSA 4096 | CI/CD | 2026-12 | all |
 
-## 10. Okamžitá¹¡ revokace
+## 10. Okamzita revokace
 
-PØ®i odchodu zamì½½stnance nebo kompromitaci:
+Pri odchodu zamestnance nebo kompromitaci:
 
-1. Odstraňte klí¹¡è¹¡ ze všech `authorized_keys`
-2. Zakažte uživatelskì½½ úè¹¡et
-3. Zkontrolujte logy pro podezØ®elou aktivitu
-4. Vygenerujte novì½½ klí¹¡è¹¡ pro náhradu
+1. Odstrante klic ze vsech `authorized_keys`
+2. Zakazte uzivatelsky ucet
+3. Zkontrolujte logy pro podezrelou aktivitu
+4. Vygenerujte novy klic pro nahradu
