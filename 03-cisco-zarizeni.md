@@ -1,18 +1,18 @@
-# Sprá¹¡va SSH klí¹¡è¹¥ na Cisco zaØ®í¹¡zení¹¡ch
+# Sprava SSH klicu na Cisco zarizenich
 
-## Požadavky
+## Pozadavky
 
 - Cisco IOS 15.0+ nebo IOS-XE
-- AAA s loká¹¡lní¹¡ databá¹¡zí¹¡ nebo TACACS+/RADIUS
-- Povolenì½½ SSH server
+- AAA s lokalni databazi nebo TACACS+/RADIUS
+- Povoleny SSH server
 
 ## Konfigurace SSH serveru
 
 ```cisco
-! Generoví¹¡ní¹¹ RSA klí¹¡è¹¡e pro server
+! Generovani RSA klice pro server
 crypto key generate rsa modulus 2048
 
-! Povolení¹¹ SSH
+! Povoleni SSH
 ip ssh version 2
 ip ssh server algorithm mac hmac-sha2-512 hmac-sha2-256
 ip ssh server algorithm encryption aes256-ctr aes192-ctr aes128-ctr
@@ -23,58 +23,58 @@ aaa authentication login default local
 aaa authorization exec default local
 aaa authorization commands 15 default local
 
-! Loká¹¡lní¹¡ uživatel s SSH pØ®í¹¡stupem
+! Lokalni uzivatel s SSH pristupem
 username admin privilege 15 secret 0 VaseHeslo123
 
-! Omezenì½½ pØ®í¹¡stupu
+! Omezeni pristupu
 line vty 0 15
  transport input ssh
  login authentication default
  access-class SSH-ACCESS in
 
-! ACL pro SSH pØ®í¹¡stup
+! ACL pro SSH pristup
 ip access-list standard SSH-ACCESS
  permit 192.168.1.0 0.0.0.255
  deny any
 ```
 
-## Nasazení¹¹ veØ®ejné¹¡ho klí¹¡è¹¡e uživatele
+## Nasazeni verejneho klice uzivatele
 
-### IOS 15.6+ a IOS-XE (podpora SSH klí¹¡è¹¥)
+### IOS 15.6+ a IOS-XE (podpora SSH klicu)
 
 ```cisco
-! VytvoØ®ení¹¡ uživatele s SSH klí¹¡è¹¡em
+! Vytvoreni uzivatele s SSH klicem
 username admin ssh ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQ... vas.email@firma.cz
 
-! Nebo pro ví́ce klí¹¡è¹¥
+! Nebo pro vice klicu
 username admin key-chain SSH-KEYS
 ```
 
-### Starší verze (bez pØ®í¹¡mé¹¡ podpory)
+### Starsi verze (bez prime podpory)
 
-Na starší́ch Cisco IOS verzí¹¡ch nenì½½ pØ®í¹¡má¹¡ podpora pro SSH public key authentication. V tomto pØ®í¹¡padì½½:
+Na starsich Cisco IOS verzich neni prima podpora pro SSH public key authentication. V tomto pripade:
 
-1. Použijte silné¹¡ heslo s AAA/TACACS+
-2. Omezte pØ®í¹¡stup pØ®es ACL
-3. Použijte bastion host s SSH klí¹¡è¹¡i
+1. Pouzijte silne heslo s AAA/TACACS+
+2. Omezte pristup pres ACL
+3. Pouzijte bastion host s SSH klici
 
-## Testoví¹¡ní¹¹ pØ®ipojenì½½
+## Testovani pripojeni
 
 ```bash
 ssh -i ~/.ssh/id_rsa_infra admin@192.168.1.1
 ```
 
-## Kontrola SSH relací¹¡
+## Kontrola SSH relaci
 
 ```cisco
 show ssh
 show ip ssh
 ```
 
-## Bezpeè¹¡è¹¡nostní¹¡ doporuè¹¡ení¹¡ pro Cisco
+## Bezpecnostni doporuceni pro Cisco
 
-- Používejte **SSH verze 2** vì/yhradnì½½
-- Zaká¹¡zat Telnet: `no ip telnet server`
-- Omezit VTY pØ®í¹¡stup na management VLAN
-- Pravidelnì½½ mìõ¹¡¥te hesla (pokud nepouží́vá¹¡te klí¹¡è¹¡e)
-- Logujte SSH pØ®í¹¡stup na syslog server
+- Pouzivejte **SSH verze 2** vyhradne
+- Zakazat Telnet: `no ip telnet server`
+- Omezit VTY pristup na management VLAN
+- Pravidelne mente hesla (pokud nepouzivate klice)
+- Logujte SSH pristup na syslog server
