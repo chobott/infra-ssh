@@ -1,0 +1,15 @@
+# SSH Authorized Keys Template
+# Formá¹¡t: <key-type> <key> <comment> [options]
+
+# PØ®í¹¡klad s restrikcemi:
+# from="192.168.1.0/24",no-port-forwarding,no-X11-forwarding,no-agent-forwarding ssh-ed25519 AAAA... user@firma.cz
+
+# Produkè¹¡ní¹¡ servery
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... admin+prod@firma.cz
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... deploy+prod@firma.cz
+
+# Záložní¹¡ pØ®í¹¡stup (pouze z management VLAN)
+from="10.0.0.0/8",command="/usr/bin/tmux attach || /usr/bin/tmux" ssh-ed25519 AAAA... backup@firma.cz
+
+# Interní¹¡ servery
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... admin+internal@firma.cz
