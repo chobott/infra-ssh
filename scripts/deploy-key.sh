@@ -1,10 +1,10 @@
 #!/bin/bash
-# deploy-key.sh – Automatizované¹¹ nasazení¹¹ SSH klí¹¡è¹¡e
+# deploy-key.sh - Automatizovane nasazeni SSH klice
 
 set -e
 
 if [ $# -lt 2 ]; then
-    echo "Použití¹¡: $0 <public_key_file> <user@host> [user@host ...]"
+    echo "Pouziti: $0 <public_key_file> <user@host> [user@host ...]"
     exit 1
 fi
 
@@ -17,12 +17,12 @@ if [ ! -f "$PUBKEY" ]; then
 fi
 
 for target in "$@"; do
-    echo "=== Nasazení¹¡ na $target ==="
+    echo "=== Nasazeni na $target ==="
     
-    # VytvoØ®ení¹¡ .ssh adresá¹¡Ø®e
+    # Vytvoreni .ssh adresare
     ssh "$target" "mkdir -p ~/.ssh && chmod 700 ~/.ssh"
     
-    # PØ®idá¹¡ní¹¡ klí¹¡è¹¡e
+    # Pridani klice
     cat "$PUBKEY" | ssh "$target" "cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
     
     echo "✓ Nasazeno na $target"
