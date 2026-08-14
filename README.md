@@ -1,35 +1,35 @@
-# Infra-SSH – Kompletní¹¹ návod na sprá¹¡vu SSH klí¹¡è¹¥
+# Infra-SSH - Kompletni navod na spravu SSH klicu
 
-Komplexní¹¹ průvodce správou SSH klí¹¡è¹¥ pro administraci Linux serverů, Cisco zaØ®í¹¡zen, MikroTik routerů a další infrastruktury.
+Komplexni pruvodce spravou SSH klicu pro administraci Linux serveru, Cisco zarizeni, MikroTik routeru a dalsi infrastruktury.
 
-## 📚 Obsah
+## Obsah
 
-1. [Generoví¹¡ní¹¹ SSH klí¹¡è¹¥](01-generovani-klicu.md)
+1. [Generovani SSH klicu](01-generovani-klicu.md)
 2. [Linux servery](02-linux-servery.md)
-3. [Cisco zaØ®í¹¡zení¹¡](03-cisco-zarizeni.md)
+3. [Cisco zarizeni](03-cisco-zarizeni.md)
 4. [MikroTik RouterOS](04-mikrotik.md)
 5. [Best Practices](05-best-practices.md)
-6. [Rotace a audit klí¹¡è¹¥](06-rotace-a-audit.md)
+6. [Rotace a audit klicu](06-rotace-a-audit.md)
 
-## 🛠️ Skripty
+## Skripty
 
-- `scripts/deploy-key.sh` – Automatizované¹¹ nasazení¹¹ veØ®ejné¹¡ho klí¹¡è¹¡e
-- `scripts/audit-keys.sh` – Audit oprá¹¡vněné¹¡ch klí¹¡è¹¥ na serverech
-- `scripts/rotate-key.sh` – Rotace SSH klí¹¡è¹¥
+- `scripts/deploy-key.sh` - Automatizovane nasazeni verejneho klice
+- `scripts/audit-keys.sh` - Audit opravnenych klicu na serverech
+- `scripts/rotate-key.sh` - Rotace SSH klicu
 
-## 📋 Šablony
+## Sablony
 
-- `templates/authorized_keys.template` – Šablona pro soubor authorized_keys
-- `templates/ssh-config.template` – Šablona SSH configu pro klienta
+- `templates/authorized_keys.template` - Sablona pro soubor authorized_keys
+- `templates/ssh-config.template` - Sablona SSH configu pro klienta
 
-## 🔐 Bezpečnostní¹¹ doporučení¹¡
+## Bezpecnostni doporuceni
 
-- Používejte **Ed25519** klí¹¡è¹¡e (nebo RSA 4096-bit)
-- Vždy chraňte privá¹¡tní¹¹ klí¹¡è¹¡ **passphrase**
-- Rotujte klí¹¡è¹¡e každé¹¡ch **6–12 měsí¹¡ců**
-- Nikdy nesdí¹¡lejte privá¹¡tní¹¹ klí¹¡è¹¡e mezi uživateli
-- Po odchodu zaměstnance okamžitě zrušte jeho klí¹¡è¹¡e
+- Pouzivejte **Ed25519** klice (nebo RSA 4096-bit)
+- Vzdy chranite privatni klic **passphrase**
+- Rotujte klice kazdych **6-12 mesicu**
+- Nikdy nesdilejte privatni klice mezi uzivateli
+- Po odchodu zamestnance okamzite zruste jeho klice
 
-## 📞 Podpora
+## Podpora
 
-V případě problémů kontaktujte bezpečnostní¹¹ tým.
+V pripade problemu kontaktujte bezpecnostni tym.
