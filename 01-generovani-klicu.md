@@ -1,24 +1,24 @@
-# Generoví¹¡ní¹¹ SSH klí¹¡è¹¥
+# Generovani SSH klicu
 
-## Doporuè¹¡enì½½ typ klí¹¡è¹¡e
+## Doporuceny typ klice
 
-Pro novou infrastrukturu používejte **Ed25519** – je rychlejší a bezpeè¹¡nì½½jší než RSA.
+Pro novou infrastrukturu pouzivejte **Ed25519** - je rychlejsi a bezpecnejsi nez RSA.
 
 ```bash
-# Generoví¹¡ní¹¹ Ed25519 klí¹¡è¹¡e
+# Generovani Ed25519 klice
 ssh-keygen -t ed25519 -C "vas.email@firma.cz" -f ~/.ssh/id_ed25519_infra
 ```
 
-Pro kompatibilitu se staršími zaØ®í¹¡zení¹¡mi (nì½½které¹¡ Cisco IOS verze) použijte RSA 4096-bit:
+Pro kompatibilitu se starsimi zarizenimi (nektere Cisco IOS verze) pouzijte RSA 4096-bit:
 
 ```bash
-# Generoví¹¡ní¹¹ RSA 4096-bit klí¹¡è¹¡e
+# Generovani RSA 4096-bit klice
 ssh-keygen -t rsa -b 4096 -C "vas.email@firma.cz" -f ~/.ssh/id_rsa_infra
 ```
 
-## Nastavení¹¹ oprá¹¡vnì½½ní¹¡
+## Nastaveni opravneni
 
-Sprá¹¡vná¹¡ oprá¹¡vnì½½ní¹¡ jsou kritická¹¡ pro bezpeè¹¡è¹¡nost:
+Spravna opravneni jsou kriticka pro bezpecnost:
 
 ```bash
 chmod 700 ~/.ssh
@@ -26,25 +26,25 @@ chmod 600 ~/.ssh/id_ed25519_infra
 chmod 644 ~/.ssh/id_ed25519_infra.pub
 ```
 
-## PØ®idá¹¡ní¹¹ klí¹¡è¹¡e do SSH agenta
+## Pridani klice do SSH agenta
 
 ```bash
-# Spuštì½½ní¹¡ agenta
+# Spusteni agenta
 eval "$(ssh-agent -s)"
 
-# PØ®idá¹¡ní¹¹ klí¹¡è¹¡e
+# Pridani klice
 ssh-add ~/.ssh/id_ed25519_infra
 ```
 
-## Kontrola veØ®ejné¹¡ho klí¹¡è¹¡e
+## Kontrola verejneho klice
 
 ```bash
 cat ~/.ssh/id_ed25519_infra.pub
 ```
 
-Vì½½stup bude vypadat napØ®.:
+Vystup bude vypadat napr.:
 ```
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... vas.email@firma.cz
 ```
 
-Tento ØØ®á¹¡dek zkopí¹¡rujte do `authorized_keys` na cílovì½½ch zaØ®í¹¡zení¹¡ch.
+Tento radek zkopirujte do `authorized_keys` na cilovych zarizenich.
