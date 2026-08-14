@@ -1,87 +1,87 @@
-# Sprá¹¡va SSH klí¹¡è¹¥ na MikroTik RouterOS
+# Sprava SSH klicu na MikroTik RouterOS
 
-## Požadavky
+## Pozadavky
 
-- RouterOS v7.x (doporuè¹¡eno)
+- RouterOS v7.x (doporuceno)
 - SSH server povolen
 
-## Povolení¹¹ SSH serveru
+## Povoleni SSH serveru
 
 ```bash
-# V WinBox nebo CLI
+# Ve WinBox nebo CLI
 /system ssh set enabled=yes
 ```
 
-## Import SSH klí¹¡è¹¡e na MikroTik
+## Import SSH klice na MikroTik
 
-MikroTik nepodporuje generoví¹¡ní¹¹ SSH klí¹¡è¹¥ pØ®í¹¡mo na zaØ®í¹¡zení¹¡. Klí¹¡è¹¡ musí́ bý́t vygenerová¹¡n externì½½ (Linux, Windows) a importová¹¡n.
+MikroTik nepodporuje generovani SSH klicu primo na zarizeni. Klic musi byt vygenerovan externe (Linux, Windows) a importovan.
 
-### Krok 1: Vygeneroví¹¡ní¹¹ klí¹¡è¹¡e (na Linuxu)
+### Krok 1: Vygenerovani klice (na Linuxu)
 
 ```bash
 ssh-keygen -t rsa -b 2048 -f mikrotik_key -N ""
 ```
 
-**Pozná¹¡mka:** RouterOS vyžaduje klí¹¡è¹¡ **bez passphrase** pro import.
+**Poznamka:** RouterOS vyzaduje klic **bez passphrase** pro import.
 
-### Krok 2: Import privá¹¡tní¹¡ho klí¹¡è¹¡e
+### Krok 2: Import privatniho klice
 
 ```bash
-# Nahrajte soubor mikrotik_key na MikroTik pØ®es FTP/SCP
-# Poté¹¡ importujte:
+# Nahrajte soubor mikrotik_key na MikroTik pres FTP/SCP
+# Pote importujte:
 
 /system ssh import-host-key private-key-file=mikrotik_key
 ```
 
-### Krok 3: Nasazení¹¹ veØ®ejné¹¡ho klí¹¡è¹¡e pro uživatele
+### Krok 3: Nasazeni verejneho klice pro uzivatele
 
 ```bash
 # V CLI MikroTiku
 /user ssh-keys add user=admin key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQ... vas.email@firma.cz"
 ```
 
-Nebo pØ®es WinBox:
-1. Jdì½½te na **System → Users**
-2. Vyberte uživatele (napØ®. `admin`)
-3. Kliknì½½te na **SSH Keys**
-4. PØ®idejte novì½½ klí¹¡è¹¡ a vložte veØ®ejnì½½ klí¹¡è¹¡
+Nebo pres WinBox:
+1. Jdete na **System → Users**
+2. Vyberte uzivatele (napr. `admin`)
+3. Kliknete na **SSH Keys**
+4. Pridejte novy klic a vlozte verejny klic
 
 ## Konfigurace SSH serveru
 
 ```bash
-# Zmì½½na portu (volitelné¹¡)
+# Zmena portu (volitelne)
 /ip service set ssh port=2222
 
-# Povolení¹¹ pouze strong krypto (v7.12+)
+# Povoleni pouze strong krypto (v7.12+)
 /system ssh set strong-crypto=yes
 
-# Omezenì½½ pØ®í¹¡stupu z konkré¹¡tní¹¡ch IP
+# Omezeni pristupu z konkretnich IP
 /ip service set ssh address=192.168.1.0/24
 ```
 
-## Zaká¹¡zá¹¡ní¹¡ heslové¹¡ho pØ®ihlá¹¡šení́
+## Zakazani hesloveho prihlaseni
 
-Po úspì½½šné¹¡m nasazení¹¡ klí¹¡è¹¥:
+Po uspesnem nasazeni klicu:
 
 ```bash
-# VytvoØ®te záložní¹¡ho uživatele s heslem pro pØ®í¹¡pad nouze
+# Vytvorte zalozniho uzivatele s heslem pro pripad nouze
 /user add name=backup-admin password=SilneHeslo123 group=full
 
-# Poté¹¡ mùžete omezit ostatní¹¡ uživatele na SSH klí¹¡è¹¡e
+# Pote muzete omezit ostatni uzivatele na SSH klice
 /user set admin password=""
 ```
 
-## Testoví¹¡ní¹¹ pØ®ipojenì½½
+## Testovani pripojeni
 
 ```bash
 ssh -i ~/.ssh/id_rsa_infra admin@192.168.1.1
 ```
 
-## Bezpeè¹¡è¹¡nostní¹¡ doporuè¹¡ení¹¡ pro MikroTik
+## Bezpecnostni doporuceni pro MikroTik
 
-- Používejte **RouterOS v7** s podporou Ed25519 (od v7.12)
-- Zaká¹¡zat Telnet a MAC-Telnet pokud nejsou potØ®eba
-- Omezit SSH pØ®í¹¡stup na management VLAN
-- Pravidelnì½½ aktualizujte RouterOS
-- Používejte firewall pro omezenì½½ zdrojovì½½ch IP
-- Zakažte unused služby (FTP, WWW pokud nepotØ®ebné¹¡)
+- Pouzivejte **RouterOS v7** s podporou Ed25519 (od v7.12)
+- Zakazat Telnet a MAC-Telnet pokud nejsou potreba
+- Omezit SSH pristup na management VLAN
+- Pravidelne aktualizujte RouterOS
+- Pouzijte firewall pro omezeni zdrojovych IP
+- Zakazte unused sluzby (FTP, WWW pokud nepotrebne)
