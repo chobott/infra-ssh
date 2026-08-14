@@ -1,5 +1,5 @@
 # SSH Client Config Template
-# Umí¹¡stì½½ní¹¡: ~/.ssh/config
+# Umisteni: ~/.ssh/config
 
 # Bastion host
 Host bastion
@@ -9,7 +9,7 @@ Host bastion
     IdentitiesOnly yes
     ForwardAgent no
 
-# Produkè¹¡ní¹¡ servery (pØ®es bastion)
+# Produkcní´´ servery (pres bastion)
 Host prod-*
     ProxyJump bastion
     User admin
@@ -18,13 +18,13 @@ Host prod-*
     ServerAliveInterval 60
     ServerAliveCountMax 3
 
-# Interní¹¡ servery
+# Interní´´ servery
 Host internal-*
     User admin
     IdentityFile ~/.ssh/id_ed25519_internal
     IdentitiesOnly yes
 
-# Cisco zaØ®í¹¡zení¹¡
+# Cisco zarizeni
 Host cisco-*
     User admin
     IdentityFile ~/.ssh/id_rsa_cisco
@@ -39,7 +39,7 @@ Host mikrotik-*
     IdentityFile ~/.ssh/id_rsa_mikrotik
     PubkeyAuthentication yes
 
-# Globá¹¡lní¹¡ nastavení¹¡
+# Globalni nastaveni
 Host *
     AddKeysToAgent yes
     UseKeychain yes
